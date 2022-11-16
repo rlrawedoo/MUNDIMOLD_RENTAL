@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2016-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- License URL : https://store.webkul.com/license.html/ -->
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="inherit_rental_product_form_view">
+            <field name="name">Website Sale Rental Product Form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="website_sale.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//button[@name='website_publish_button']" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </xpath>
+                <xpath expr="//sheet//div[@name='button_box']" position="inside">
+                    <button name="toggle_website_published" type="object"
+                        class="oe_right oe_stat_button" icon="fa-globe">
+                        <field name="website_published" widget="website_button"/>
+                    </button>
+                </xpath>
+            </field>
+        </record>
+        <record id="inherit_rental_product_template_view_form" model="ir.ui.view">
+            <field name="name">rental.product.template.common.form.inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="odoo_sale_rental.inherit_rental_product_template_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//page[@name='rent']//field[@name='rental_tenure_ids']//field[@name='tenure_value']" position="before">
+                    <field name="sequence" widget="handle"/>
+                </xpath>
+                <xpath expr="//page[@name='rent']//field[@name='rental_tenure_ids']//field[@name='rent_price']" position="after">
+                    <field name="is_default" help="Make default true to display this tenure on website in product page."/>
+                    <field name="max_tenure_value"/>
+                </xpath>
+                <xpath expr="//page[@name='rent']//field[@name='rental_tenure_ids']" position="after">
+                    <group>
+                        <group>
+                            <field name="rental_tenure_id" help="Select starting tenure for this product to show in rental page on website."
+                                domain= "[('product_tmpl_id','=',active_id),('is_default','=',True)]"
+                                options="{'no_create_edit': True, 'no_open': True}"/>
+                        </group>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+        <record id="inherit_rental_product_category_view_form" model="ir.ui.view">
+            <field name="name">rental.product.category.form.inherit</field>
+            <field name="model">rental.product.category</field>
+            <field name="inherit_id" ref="odoo_sale_rental.rental_product_category_view_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet//field[@name='hide_all_product']" position="after">
+                    <field name="public_categ_ids" widget="many2many_tags"/>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</odoo>
